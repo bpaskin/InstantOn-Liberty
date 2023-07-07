@@ -1,0 +1,120 @@
+---
+apiVersion: project.openshift.io/v1
+description: "InstantOn Liberty Demo"
+displayName: demo
+kind: ProjectRequest
+metadata:
+    name: demo
+---
+# IBM Operator Catalog
+apiVersion: operators.coreos.com/v1alpha1
+kind: CatalogSource
+metadata:
+  name: ibm-operator-catalog
+  namespace: openshift-marketplace
+spec:
+  displayName: ibm-operator-catalog 
+  publisher: IBM Content
+  sourceType: grpc
+  image: icr.io/cpopen/ibm-operator-catalog
+  updateStrategy:
+    registryPoll:
+      interval: 45m
+---
+# install WAS Liberty Operator
+apiVersion: operators.coreos.com/v1alpha1
+kind: Subscription
+metadata:
+  name: was-liberty
+  namespace: demo
+spec:
+  installPlanApproval: Automatic
+  name: ibm-websphere-liberty
+  source: ibm-operator-catalog
+  sourceNamespace: openshift-marketplace
+---
+# Store Liberty image locally
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: liberty
+  namespace: demo
+spec:
+  lookupPolicy:
+    local: false
+  tags:
+    - name: liberty
+      annotations: null
+      from:
+        kind: DockerImage
+        name: 'icr.io/appcafe/websphere-liberty:full-java17-openj9-ubi'
+      generation: 1
+      importPolicy: {}
+      referencePolicy:
+        type: Source
+---
+# ImageStream to hold the app locally in the OCP Repo
+kind: ImageStream
+apiVersion: image.openshift.io/v1
+metadata:
+  name: modresorts-app
+spec:
+  lookupPolicy:
+    local: false
+---
+# BuildConfig modresoirt image
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: modresorts-build
+  labels:
+    app: modresorts-build
+spec:
+  source:
+    type: Git
+    git:
+      uri: https://github.com/bpaskin/
+  strategy:
+    type: Docker                      
+    dockerStrategy:
+      dockerfilePath: Dockerfile
+      from:
+        kind: ImageStreamTag       
+        namespace: demo
+        name: liberty:liberty
+  output:
+    to:
+      kind: ImageStreamTag
+      name: modresorts-app:latest
+  triggers:
+     - type: ImageChange
+     - type: GitHub
+---
+# Deploy application 
+apiVersion: liberty.websphere.ibm.com/v1
+kind: WebSphereLibertyApplication
+metadata:
+   name: modresorts-app
+   namespace: demo
+spec:
+   license:
+      accept: true
+      edition: IBM WebSphere Application Server
+      productEntitlementSource: Standalone
+   applicationImage: 'image-registry.openshift-image-registry.svc:5000/demo/modresorts-app:latest'
+   expose: true
+   manageTLS: true
+   replicas: 1
+   applicationName: modresorts
+   pullPolicy: Always
+   networkPolicy:
+   disable: true
+   securityContext:
+    capabilities:
+      add:
+        - CHECKPOINT_RESTORE
+        - SETPCAP
+    runAsNonRoot: true
+    privileged: false
+    allowPrivilegeEscalation: true
+...
