@@ -3,6 +3,7 @@ FROM icr.io/appcafe/websphere-liberty:full-java17-openj9-ubi
 COPY --chown=1001:0 target/modresorts-1.0.war /config/apps/modresorts-1.0.war
 COPY --chown=1001:0 server.xml                /config/server.xml
 
+RUN setcap cap_checkpoint_restore,cap_sys_ptrace,cap_setpcap=eip /opt/criu/criu
 RUN configure.sh
 RUN checkpoint.sh afterAppStart
 
