@@ -73,7 +73,7 @@ spec:
   source:
     type: Git
     git:
-      uri: https://github.com/bpaskin/
+      uri: https://github.com/bpaskin/InstantOn-Liberty.git
   strategy:
     type: Docker                      
     dockerStrategy:
@@ -88,7 +88,6 @@ spec:
       name: modresorts-app:latest
   triggers:
      - type: ImageChange
-     - type: GitHub
 ---
 # Deploy application 
 apiVersion: liberty.websphere.ibm.com/v1
