@@ -1,3 +1,9 @@
+# For OCP 4.13 +
+#
+# Must run the following command to associate the security context
+# with the user to be used
+# oc adm policy add-scc-to-user builder-scc builder
+#
 ---
 apiVersion: project.openshift.io/v1
 description: "InstantOn Liberty Demo"
