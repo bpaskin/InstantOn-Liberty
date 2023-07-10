@@ -1,7 +1,5 @@
-plugins {
-    id 'war'
-}
-
+apply plugin: 'java'
+apply plugin: 'war'
 version = "1.0"
 defaultTasks 'clean', 'build'
 project.webAppDirName = 'WebContent'
@@ -21,12 +19,8 @@ dependencies {
 	implementation group: 'org.json', name: 'json', version: '20180130'
 }
 
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(8)
-    }
-}
-
 war {
-    archiveName '../../../source/target/modresorts-1.0.war'
+    webInf { from 'WebContent/WEB-INF' }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveFileName = "../../target/modresorts-1.0.war"   
 }
