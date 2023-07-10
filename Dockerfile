@@ -1,8 +1,11 @@
 FROM icr.io/appcafe/websphere-liberty:full-java17-openj9-ubi
 
+ARG VERBOSE=true
+
 COPY --chown=1001:0 target/modresorts-1.0.war /config/apps/modresorts-1.0.war
 COPY --chown=1001:0 server.xml                /config/server.xml
 
+RUN features.sh
 RUN configure.sh
 RUN checkpoint.sh afterAppStart
 

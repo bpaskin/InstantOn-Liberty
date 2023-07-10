@@ -33,6 +33,81 @@ spec:
   source: ibm-operator-catalog
   sourceNamespace: openshift-marketplace
 ---
+# Add security context for building liberty images with CRIU
+allowHostDirVolumePlugin: true
+allowHostIPC: false
+allowHostNetwork: false
+allowHostPID: false
+allowHostPorts: false
+allowPrivilegeEscalation: true
+allowPrivilegedContainer: false
+allowedCapabilities: null
+apiVersion: security.openshift.io/v1
+defaultAddCapabilities: 
+- CHECKPOINT_RESTORE
+- SETPCAP
+- SYS_PTRACE
+fsGroup:
+  type: MustRunAs
+groups:
+- system:authenticated
+kind: SecurityContextConstraints
+metadata:
+  annotations:
+    kubernetes.io/description: criu-scc is based on the restricted SCC but removes any restrictions
+      that prevent the restore image from running successfully.
+  generation: 1
+  name: builder-scc
+priority: null
+readOnlyRootFilesystem: false
+requiredDropCapabilities:
+- ALL
+runAsUser:
+  type: MustRunAs
+  uid: 1001
+seLinuxContext:
+  type: MustRunAs
+supplementalGroups:
+  type: RunAsAny
+users: []
+volumes:
+- configMap
+- downwardAPI
+- emptyDir
+- persistentVolumeClaim
+- projected
+- secret
+---
+# Add a new role for builder and link it to the security context
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: builder
+  namespace: demo
+rules:
+  - verbs:
+      - use
+    apiGroups:
+      - security.openshift.io
+    resources:
+      - securitycontextconstraints
+    resourceNames:
+      - builder-scc
+---
+# Bind the role to the builder service account
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: builder
+  namespace: demo
+subjects:
+  - kind: ServiceAccount
+    name: builder
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: builder
+---
 # Store Liberty image locally
 kind: ImageStream
 apiVersion: image.openshift.io/v1
