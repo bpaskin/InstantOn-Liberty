@@ -10,6 +10,7 @@ RUN configure.sh
 RUN checkpoint.sh afterAppStart
 
 # Requires Linux Kernel 5.9 or later and criu installed
+# Should be run as root when building the image
 # For SELinux this may need to be set set: 
 #   setsebool virt_sandbox_use_netlink 1
 # To build the image:
