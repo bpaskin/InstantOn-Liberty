@@ -43,7 +43,7 @@ allowPrivilegeEscalation: true
 allowPrivilegedContainer: false
 allowedCapabilities: null
 apiVersion: security.openshift.io/v1
-defaultAddCapabilities: 
+defaultAddCapabilities:
 - CHECKPOINT_RESTORE
 - SETPCAP
 - SYS_PTRACE
@@ -57,7 +57,7 @@ metadata:
     kubernetes.io/description: criu-scc is based on the restricted SCC but removes any restrictions
       that prevent the restore image from running successfully.
   generation: 1
-  name: builder-scc
+  name: cap-cr-scc
 priority: null
 readOnlyRootFilesystem: false
 requiredDropCapabilities:
