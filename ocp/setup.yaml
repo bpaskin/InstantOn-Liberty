@@ -148,6 +148,7 @@ apiVersion: build.openshift.io/v1
 kind: BuildConfig
 metadata:
   name: modresorts-build
+  namespace: demo
   labels:
     app: modresorts-build
 spec:
