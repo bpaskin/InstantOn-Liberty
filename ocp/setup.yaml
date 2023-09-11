@@ -139,6 +139,7 @@ kind: ImageStream
 apiVersion: image.openshift.io/v1
 metadata:
   name: modresorts-app
+  namespace: demo
 spec:
   lookupPolicy:
     local: false
