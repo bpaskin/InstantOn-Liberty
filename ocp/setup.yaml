@@ -72,7 +72,7 @@ metadata:
     kubernetes.io/description: criu-scc is based on the restricted SCC but removes any restrictions
       that prevent the restore image from running successfully.
   generation: 1
-  name: cap-cr-scc
+  name: builder-scc
 priority: null
 readOnlyRootFilesystem: false
 requiredDropCapabilities:
