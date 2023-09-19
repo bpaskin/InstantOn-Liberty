@@ -39,7 +39,8 @@ spec:
   name: ibm-websphere-liberty
   source: ibm-operator-catalog
   sourceNamespace: openshift-marketplace
----apiVersion: operators.coreos.com/v1
+---
+apiVersion: operators.coreos.com/v1
 kind: OperatorGroup
 metadata:
   name: liberty-operator-group
@@ -108,6 +109,8 @@ rules:
       - securitycontextconstraints
     resourceNames:
       - builder-scc
+    verbs:
+      - use
 ---
 # Bind the role to the builder service account
 kind: RoleBinding
