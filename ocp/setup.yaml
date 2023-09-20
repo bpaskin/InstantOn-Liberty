@@ -109,8 +109,6 @@ rules:
       - securitycontextconstraints
     resourceNames:
       - builder-scc
-    verbs:
-      - use
 ---
 # Bind the role to the builder service account
 kind: RoleBinding
