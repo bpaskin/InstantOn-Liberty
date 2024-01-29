@@ -193,7 +193,7 @@ spec:
       accept: true
       edition: IBM WebSphere Application Server
       productEntitlementSource: Standalone
-   applicationImage: 'image-registry.openshift-image-registry.svc:5000/demo/modresorts-app:latest'
+   applicationImage: 'quay.io/bpaskin_us/modresorts:instanton
    expose: true
    manageTLS: true
    replicas: 1
