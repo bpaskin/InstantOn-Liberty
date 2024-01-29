@@ -34,7 +34,7 @@ metadata:
   name: was-liberty
   namespace: demo
 spec:
-  channel: v1.2
+  channel: v1.3
   installPlanApproval: Automatic
   name: ibm-websphere-liberty
   source: ibm-operator-catalog
