@@ -1,0 +1,1 @@
+Currently OCP `BuildConfig` does not allow for adding of capabilties.  The image must be created outside of OCP and then it can be used during the RESTORE function.  I am currently awaiting a [RFE](https://issues.redhat.com/browse/RFE-4707) from RedHat to see if they will update the `BuildConfig`
