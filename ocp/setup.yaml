@@ -56,6 +56,13 @@ metadata:
   name: liberty-instanton-scc
   namespace: demo
 ---
+# Create builder for BuildConfig Service Account
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: builder
+  namespace: demo
+---
 # Add a new role for builder and link it to the security context
 kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
