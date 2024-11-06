@@ -202,11 +202,13 @@ spec:
    networkPolicy:
    disable: true
    securityContext:
+    allowPrivilegeEscalation: true
     capabilities:
       add:
         - CHECKPOINT_RESTORE
         - SETPCAP
-    runAsNonRoot: true
+      drop:
+        - ALL
     privileged: false
-    allowPrivilegeEscalation: true
+    runAsNonRoot: true
 ...
